@@ -2,31 +2,11 @@ import cv2 as cv
 import os
 import numpy as np
 
+from config import (COLORS, WIDTH, HEIGHT, LINE_THICKNESS,
+                    BUTTON_COLOR, BUTTON_HOVER_COLOR,
+                    BUTTON_CLICK_COLOR, BUTTON_TEXT_COLOR)
 from events import MouseEvent
 from widgets import Button
-
-# Define window size
-WIDTH, HEIGHT = 720, 480
-
-# Some constants
-COLORS = {
-    "blue": (255, 0, 0),
-    "green": (0, 255, 0),
-    "red": (0, 0, 255),
-    "yellow": (0, 255, 255),
-    "yellow90": (0, 180, 200),
-    "white": (255, 255, 255),
-    "black": (0, 0, 0),
-    "blue90":(200,0,0),
-    "blue-click":(255,50,50),
-}
-LINE_THICKNESS = 2
-CUT_LINE_COLOR = COLORS['red']
-
-BUTTON_COLOR = COLORS['blue']
-BUTTON_HOVER_COLOR = COLORS['blue90']
-BUTTON_CLICK_COLOR = COLORS["blue-click"]
-BUTTON_TEXT_COLOR = COLORS["white"]
 
 key = 0
 mouse_events_list = []
@@ -45,10 +25,12 @@ def mouse_event_callback(event, xpos, ypos, *args):
                 i.y = ypos
     last_event = event
 
+
 cv.namedWindow("Canvas")
 cv.setMouseCallback("Canvas", mouse_event_callback)
 
 buttons = []
+
 
 def demo_callback():
     print("""
@@ -57,9 +39,10 @@ def demo_callback():
     it will throw an exception or not
     """)
 
+
 # Create some buttons
-for i,text in zip(range(1, 5), ["Save", "Clear", "Next", "Prev"]):
-    button = Button(x=i + 1 * 50, y=i * 60,text=text,callback_function=demo_callback)
+for i, text in zip(range(1, 5), ["Save", "Clear", "Next", "Prev"]):
+    button = Button(x=i + 1 * 50, y=i * 60, text=text, callback_function=demo_callback)
     buttons.append(button)
 
 while True:
@@ -96,27 +79,27 @@ while True:
 
     # Listen for MODES
 
-    #Import Image Mode
+    # Import Image Mode
 
-    #Draw on Image Mode
+    # Draw on Image Mode
 
-    #Save Image Mode
+    # Save Image Mode
 
-    #Crop Image Mode
+    # Crop Image Mode
 
-    #Rotate Image Mode
+    # Rotate Image Mode
 
-    #Blur Image Mode
+    # Blur Image Mode
 
-    #UNDO MODE
+    # UNDO MODE
 
-    #REDO MODE
+    # REDO MODE
 
-    #CUT Image
+    # CUT Image
 
-    #Exit MODE
+    # Exit MODE
 
-    #Clear Mode
+    # Clear Mode
 
     key = cv.waitKey(1)
     if key == ord("d"):
