@@ -4,7 +4,8 @@ import numpy as np
 
 from config import (COLORS, WIDTH, HEIGHT, LINE_THICKNESS,
                     BUTTON_COLOR, BUTTON_HOVER_COLOR,
-                    BUTTON_CLICK_COLOR, BUTTON_TEXT_COLOR)
+                    BUTTON_CLICK_COLOR, BUTTON_TEXT_COLOR,
+                    BUTTONS)
 from events import MouseEvent
 from widgets import Button
 
@@ -29,8 +30,6 @@ def mouse_event_callback(event, xpos, ypos, *args):
 cv.namedWindow("Canvas")
 cv.setMouseCallback("Canvas", mouse_event_callback)
 
-buttons = []
-
 
 def demo_callback():
     print("""
@@ -40,15 +39,10 @@ def demo_callback():
     """)
 
 
-# Create some buttons
-for i, text in zip(range(1, 5), ["Save", "Clear", "Next", "Prev"]):
-    button = Button(x=i + 1 * 50, y=i * 60, text=text, callback_function=demo_callback)
-    buttons.append(button)
-
 while True:
     blank_canvas = np.zeros([HEIGHT, WIDTH, 3], dtype=np.uint8)
 
-    for button in buttons:
+    for button in BUTTONS:
         cv.rectangle(blank_canvas, (button.x, button.y), (button.x + button.width, button.y + button.height),
                      BUTTON_COLOR, -1)
         if len(mouse_events_list) > 0:

@@ -1,3 +1,4 @@
+from widgets import Button
 
 COLORS = {
     "blue": (255, 0, 0),
@@ -7,12 +8,12 @@ COLORS = {
     "yellow90": (0, 180, 200),
     "white": (255, 255, 255),
     "black": (0, 0, 0),
-    "blue90":(200,0,0),
-    "blue-click":(255,50,50),
+    "blue90": (200, 0, 0),
+    "blue-click": (255, 50, 50),
 }
 
 # Define window size
-WIDTH, HEIGHT = 720, 480
+WIDTH, HEIGHT = 1020, 640
 
 # Some constants
 
@@ -23,3 +24,4 @@ BUTTON_COLOR = COLORS['blue']
 BUTTON_HOVER_COLOR = COLORS['blue90']
 BUTTON_CLICK_COLOR = COLORS["blue-click"]
 BUTTON_TEXT_COLOR = COLORS["white"]
+BUTTON_WIDTH,BUTTON_HEIGHT = 80, 40
