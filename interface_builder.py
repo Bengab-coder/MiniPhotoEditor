@@ -45,16 +45,16 @@ def mouse_event_callback(evt, x, y, *args):
         is_dragging = False
         current_button_dragged = None
 
-    # CREATE-NEW-BUTTON
-    elif event == cv.EVENT_LBUTTONDBLCLK:
-        new_button = Button(x=xpos, y=ypos)
-        buttons.append(new_button)
-
-    # DELETE-BUTTON
-    elif event == cv.EVENT_RBUTTONDOWN:
-        for button in buttons:
-            if button.is_hover(xpos, ypos):
-                buttons.remove(button)
+    # # CREATE-NEW-BUTTON
+    # elif event == cv.EVENT_LBUTTONDBLCLK:
+    #     new_button = Button(x=xpos, y=ypos)
+    #     buttons.append(new_button)
+    #
+    # # DELETE-BUTTON
+    # elif event == cv.EVENT_RBUTTONDOWN:
+    #     for button in buttons:
+    #         if button.is_hover(xpos, ypos):
+    #             buttons.remove(button)
 
     with open("BUTTONS-CONFIG", "wb") as buttons_config:
         pickle.dump(buttons, buttons_config)
@@ -73,6 +73,9 @@ while True:
         # DRAW A BREAKING LINE TO SHOW COORDINATES
         cv.line(canvas, (0, ypos), (WIDTH, ypos), COLORS['red'], 2)
         cv.line(canvas, (xpos, 0), (xpos, HEIGHT), COLORS['red'], 2)
+
+    # Draw coordinates ar top right
+    cv.putText(canvas,f"{xpos},{ypos}",(WIDTH-150,20),cv.FONT_HERSHEY_PLAIN,1,COLORS['red'],2)
 
     for button in buttons:
         cv.rectangle(canvas, (button.x, button.y), (button.x + button.width, button.y + button.height),
