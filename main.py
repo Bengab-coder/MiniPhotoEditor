@@ -1,17 +1,19 @@
+import pickle
+from tkinter import filedialog
+
+
 import cv2 as cv
 import os
 import numpy as np
 
-from config import (COLORS, WIDTH, HEIGHT, LINE_THICKNESS,
-                    BUTTON_COLOR, BUTTON_HOVER_COLOR,
-                    BUTTON_CLICK_COLOR, BUTTON_TEXT_COLOR,
-                    BUTTONS)
+from config import *
 from events import MouseEvent
 from widgets import Button
 
 key = 0
 mouse_events_list = []
 last_event = None
+current_mode = None
 
 
 def mouse_event_callback(event, xpos, ypos, *args):
@@ -27,6 +29,13 @@ def mouse_event_callback(event, xpos, ypos, *args):
     last_event = event
 
 
+if not os.path.exists("BUTTONS-CONFIG"):
+    with open("BUTTONS-CONFIG", 'wb') as first:
+        BUTTONS = []
+else:
+    with open("BUTTONS-CONFIG", 'rb') as buttons_config:
+        BUTTONS = pickle.load(buttons_config)
+
 cv.namedWindow("Canvas")
 cv.setMouseCallback("Canvas", mouse_event_callback)
 
@@ -37,6 +46,19 @@ def demo_callback():
     callback function weather 
     it will throw an exception or not
     """)
+
+
+def browseFiles():
+    filename = filedialog.askopenfilename(
+        initialdir="/",
+        title="Select a File",
+        filetypes=(
+            ("JPG IMAGES", "*.jpg*"),
+            ("PNG IMAGES","*.png*")
+        )
+    )
+
+    print(filename)
 
 
 while True:
@@ -53,10 +75,16 @@ while True:
                     cv.rectangle(blank_canvas, (button.x, button.y),
                                  (button.x + button.width, button.y + button.height),
                                  BUTTON_CLICK_COLOR, -1)
+
                     if not button.is_down:
                         button.is_down = True
-                        if callable(button.callback_function):
-                            button.callback_function.__call__()
+                        print(f"Button {button.signature} has mode={button.mode}")
+                        if button.mode:
+                            current_mode = button.mode
+                        if current_mode == "import":
+                            browseFiles()
+                        # if callable(button.callback_function):
+                        #     button.callback_function.__call__()
 
                 # When button is clicked up
                 if current_mouse_event._id == cv.EVENT_LBUTTONUP:
@@ -70,6 +98,11 @@ while True:
                     cv.rectangle(blank_canvas, (button.x, button.y),
                                  (button.x + button.width, button.y + button.height),
                                  BUTTON_HOVER_COLOR, -1)
+        # Draw Button Text
+        cv.putText(blank_canvas, button.text,
+                   (int(button.x + button.width * 0.2), int(button.y + button.height * 0.6)),
+                   cv.FONT_HERSHEY_PLAIN, 1,
+                   COLORS['white'], 2)
 
     # Listen for MODES
 
@@ -94,6 +127,9 @@ while True:
     # Exit MODE
 
     # Clear Mode
+
+    # Draw rectangle to who editing area
+    cv.rectangle(blank_canvas, EDITING_AREA[0], EDITING_AREA[1], COLORS['blue'], 2)
 
     key = cv.waitKey(1)
     if key == ord("d"):
